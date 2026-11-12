@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#d9480f">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Apna Calendar – Parivar Calendar 2027</title>
+<style>
+:root{--bg:#fff8ef;--card:#fff;--tx:#2b1d12;--mu:#8a7767;--ac:#d9480f;--ln:#f0e2d0;--hol:#c92a2a;--pur:#e67700;--ama:#495057;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1c1511;--card:#2a201a;--tx:#f5e9dc;--mu:#b09a88;--ac:#ff8c4a;--ln:#3d2f26;--hol:#ff8787;--pur:#ffc078;--ama:#adb5bd;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1c1511;--card:#2a201a;--tx:#f5e9dc;--mu:#b09a88;--ac:#ff8c4a;--ln:#3d2f26;--hol:#ff8787;--pur:#ffc078;--ama:#adb5bd;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Noto Sans Devanagari",sans-serif;max-width:520px;margin:0 auto;padding:12px}
+.brand{display:flex;align-items:center;gap:12px;margin-bottom:12px}.brand svg{width:56px;height:56px;flex:none}.brand b{display:block;font-size:24px;line-height:1.1;color:var(--ac)}.brand span{font-size:13px;color:var(--mu)}
+.vichar{background:var(--ac);color:#fff;border-radius:14px;padding:12px 14px;font-size:15px;line-height:1.4}
+.vichar small{display:block;opacity:.85;margin-bottom:4px}
+.nav{display:flex;align-items:center;justify-content:space-between;margin:14px 0 8px}
+.nav h2{margin:0;font-size:20px}
+.nav button{background:var(--card);color:var(--tx);border:1px solid var(--ln);border-radius:10px;width:42px;height:40px;font-size:18px}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.wd{text-align:center;font-size:12px;color:var(--mu);padding:4px 0}
+.wd:first-child{color:var(--hol)}
+.d{background:var(--card);border:1px solid var(--ln);border-radius:10px;min-height:52px;padding:4px;text-align:center;color:var(--tx);font-size:15px;position:relative}
+.d.sun{color:var(--hol)}.d.hol{color:var(--hol);font-weight:700}
+.d.today{outline:2px solid var(--ac)}.d.sel{background:var(--ac);color:#fff}
+.d i{display:block;font-style:normal;font-size:10px;margin-top:2px}
+.d .p{color:var(--pur)}.d .a{color:var(--ama)}.d.sel i{color:#fff}
+.dot{position:absolute;top:4px;right:5px;width:7px;height:7px;border-radius:50%;background:#1c7ed6}
+.card{background:var(--card);border:1px solid var(--ln);border-radius:14px;padding:12px;margin-top:12px}
+.card h3{margin:0 0 8px;font-size:16px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--ln);font-size:14px}
+.row:last-child{border:0}
+.mu{color:var(--mu);font-size:12px}
+input,select{width:100%;padding:10px;margin-top:6px;border-radius:10px;border:1px solid var(--ln);background:var(--bg);color:var(--tx);font-size:15px}
+.btn{background:var(--ac);color:#fff;border:0;border-radius:10px;padding:10px 14px;font-size:14px;margin-top:8px}
+.btn.s{padding:6px 10px;margin:0;font-size:12px}.btn.g{background:#2b8a3e}.btn.x{background:var(--mu)}
+</style>
+</head>
+<body>
+<div class="brand"><svg viewBox="0 0 64 64" aria-label="logo"><rect width="64" height="64" rx="16" fill="#d9480f"/><rect x="12" y="16" width="40" height="36" rx="6" fill="#fff8ef"/><rect x="12" y="16" width="40" height="11" rx="5" fill="#fcc419"/><rect x="20" y="10" width="4" height="10" rx="2" fill="#fff8ef"/><rect x="40" y="10" width="4" height="10" rx="2" fill="#fff8ef"/><circle cx="25" cy="34" r="3.6" fill="#d9480f"/><rect x="19.5" y="38.5" width="11" height="12" rx="5" fill="#d9480f"/><circle cx="39" cy="34" r="3.6" fill="#e8590c"/><rect x="33.5" y="38.5" width="11" height="12" rx="5" fill="#e8590c"/><circle cx="32" cy="41.5" r="3" fill="#f59f00"/><rect x="28" y="45" width="8" height="6" rx="3" fill="#f59f00"/></svg><div><b>Apna Calendar</b><span>Parivar Calendar 2027</span></div></div>
+<div class="vichar"><small>आज का विचार</small><span id="v"></span></div>
+<div class="nav"><button id="pv">‹</button><h2 id="t"></h2><button id="nx">›</button></div>
+<div class="grid" id="g"></div>
+<div class="card" id="dd"></div>
+<div class="card"><h3>नया रिमाइंडर जोड़ें</h3>
+<input id="n" placeholder="नाम / काम (जैसे: माँ का जन्मदिन)">
+<select id="k"><option value="🎂">जन्मदिन</option><option value="💍">सालगिरह</option><option value="💡">बिल / EMI / प्रीमियम</option><option value="📌">अन्य</option></select>
+<input id="m" placeholder="WhatsApp नंबर (वैकल्पिक, 91 के साथ)" inputmode="numeric">
+<label class="mu"><input type="checkbox" id="y" checked style="width:auto"> हर साल दोहराएँ</label><br>
+<button class="btn" id="ad">चुनी हुई तारीख पर जोड़ें</button></div>
+<div class="card"><h3>आने वाले 30 दिन</h3><div id="up"></div></div>
+<p class="mu" style="text-align:center">पूर्णिमा/अमावस्या अनुमानित हैं (±1 दिन)। व्रत-त्योहार की तारीख अपने पंचांग से मिला लें।</p>
+<script>
+var MN=["जनवरी","फ़रवरी","मार्च","अप्रैल","मई","जून","जुलाई","अगस्त","सितंबर","अक्टूबर","नवंबर","दिसंबर"];
+var WD=["रवि","सोम","मंगल","बुध","गुरु","शुक्र","शनि"];
+var H={"1-1":"नववर्ष","1-13":"लोहड़ी","1-14":"मकर संक्रांति","1-26":"गणतंत्र दिवस","4-14":"अंबेडकर जयंती","5-1":"मज़दूर दिवस","8-15":"स्वतंत्रता दिवस","10-2":"गांधी जयंती","11-14":"बाल दिवस","12-25":"क्रिसमस"};
+var Q=["सुबह की शुरुआत मुस्कान से करें, दिन अच्छा गुज़रेगा।","परिवार का साथ सबसे बड़ी दौलत है।","मेहनत का फल देर से मिलता है, पर मीठा मिलता है।","आज का काम कल पर मत छोड़ो।","बड़ों का आशीर्वाद सबसे बड़ा खज़ाना है।","छोटी-छोटी खुशियाँ ही ज़िंदगी बनाती हैं।","सच्चा दोस्त वही जो मुश्किल में साथ दे।","जैसी सोच, वैसा जीवन।","धैर्य रखिए, अच्छा समय ज़रूर आता है।","दूसरों की मदद करने से मन को शांति मिलती है।","स्वस्थ शरीर ही असली धन है।","जो बीत गया उसे जाने दो, आज को जी भर के जियो।","विनम्रता सबसे बड़ा गहना है।","हर सुबह नया मौका लेकर आती है।","अपनों को समय दीजिए, यही असली निवेश है।"];
+var ev=[];try{ev=JSON.parse(localStorage.getItem("pc27")||"[]")}catch(e){}
+function save(){try{localStorage.setItem("pc27",JSON.stringify(ev))}catch(e){}}
+var now=new Date(),Y=2027,M=now.getFullYear()===2027?now.getMonth():0,sel=null;
+function age(y,m,d){var jd=Date.UTC(y,m,d,6,0)/864e5+2440587.5;return(((jd-2451550.1)%29.530588)+29.530588)%29.530588}
+function moon(y,m,d){var a=age(y,m,d),t=Math.floor(a/0.98435)+1;if(t===15)return"p";if(t===30||t===1&&a<0.6)return"a";return""}
+function evs(m,d){return ev.filter(function(e){return e.m===m&&e.d===d&&(e.r||e.y===Y)})}
+function $(i){return document.getElementById(i)}
+function draw(){
+ $("t").textContent=MN[M]+" "+Y;var g=$("g"),h="";
+ WD.forEach(function(w){h+='<div class="wd">'+w+'</div>'});
+ var f=new Date(Y,M,1).getDay(),n=new Date(Y,M+1,0).getDate();
+ for(var i=0;i<f;i++)h+="<div></div>";
+ for(var d=1;d<=n;d++){
+  var w=new Date(Y,M,d).getDay(),hl=H[(M+1)+"-"+d],mo=moon(Y,M,d);
+  var c="d"+(w===0?" sun":"")+(hl?" hol":"")+(sel===d?" sel":"")+(now.getFullYear()===Y&&now.getMonth()===M&&now.getDate()===d?" today":"");
+  h+='<button class="'+c+'" data-d="'+d+'">'+d+(mo==="p"?'<i class="p">पूर्णिमा</i>':mo==="a"?'<i class="a">अमावस्या</i>':hl?'<i>'+hl.split(" ")[0]+'</i>':"")+(evs(M+1,d).length?'<span class="dot"></span>':"")+"</button>";
+ }
+ g.innerHTML=h;
+ [].forEach.call(g.querySelectorAll(".d"),function(b){b.onclick=function(){sel=+b.dataset.d;draw();detail()}});
+ detail();
+}
+function detail(){
+ var el=$("dd");
+ if(!sel){el.innerHTML='<span class="mu">किसी तारीख पर टैप करें</span>';return}
+ var h='<h3>'+sel+" "+MN[M]+" "+Y+" ("+WD[new Date(Y,M,sel).getDay()]+")</h3>",k=(M+1)+"-"+sel,mo=moon(Y,M,sel),any=false;
+ if(H[k]){h+='<div class="row">🇮🇳 '+H[k]+"</div>";any=true}
+ if(mo){h+='<div class="row">🌕 '+(mo==="p"?"पूर्णिमा":"अमावस्या")+' <span class="mu">अनुमानित</span></div>';any=true}
+ evs(M+1,sel).forEach(function(e){
+  any=true;var b=e.k==="🎂"||e.k==="💍";
+  h+='<div class="row"><span>'+e.k+" "+esc(e.n)+'</span><span>'+(b?'<button class="btn s g" data-w="'+e.id+'">WhatsApp</button> ':"")+'<button class="btn s x" data-x="'+e.id+'">हटाएँ</button></span></div>'});
+ if(!any)h+='<span class="mu">कोई रिमाइंडर नहीं</span>';
+ el.innerHTML=h;
+ [].forEach.call(el.querySelectorAll("[data-x]"),function(b){b.onclick=function(){ev=ev.filter(function(e){return e.id!==+b.dataset.x});save();draw();upc()}});
+ [].forEach.call(el.querySelectorAll("[data-w]"),function(b){b.onclick=function(){var e=ev.filter(function(x){return x.id===+b.dataset.w})[0];
+  var t=e.k==="🎂"?"🎂 जन्मदिन की हार्दिक शुभकामनाएँ "+e.n+"! भगवान आपको सदा खुश और स्वस्थ रखे। 🙏":"💍 सालगिरह की हार्दिक बधाई "+e.n+"! आपका साथ यूँ ही बना रहे। 🙏";
+  window.open("https://wa.me/"+(e.ph||"")+"?text="+encodeURIComponent(t),"_blank")}});
+}
+function esc(s){return s.replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function upc(){
+ var t=new Date();t.setHours(0,0,0,0);var h="";
+ for(var i=0;i<30;i++){var x=new Date(t.getTime()+i*864e5),m=x.getMonth()+1,d=x.getDate();
+  var items=[];if(H[m+"-"+d])items.push("🇮🇳 "+H[m+"-"+d]);
+  ev.forEach(function(e){if(e.m===m&&e.d===d&&(e.r||e.y===x.getFullYear()))items.push(e.k+" "+esc(e.n))});
+  if(items.length)h+='<div class="row"><span>'+items.join(", ")+'</span><span class="mu">'+d+" "+MN[m-1]+"</span></div>"}
+ $("up").innerHTML=h||'<span class="mu">अभी कुछ नहीं</span>';
+}
+$("pv").onclick=function(){M=(M+11)%12;sel=null;draw()};
+$("nx").onclick=function(){M=(M+1)%12;sel=null;draw()};
+$("ad").onclick=function(){
+ var n=$("n").value.trim();if(!n||!sel){alert("पहले तारीख चुनें और नाम लिखें");return}
+ ev.push({id:Date.now(),n:n,k:$("k").value,m:M+1,d:sel,y:Y,r:$("y").checked,ph:$("m").value.replace(/\D/g,"")});
+ save();$("n").value="";$("m").value="";draw();upc()};
+var doy=Math.floor((now-new Date(now.getFullYear(),0,0))/864e5);
+$("v").textContent=Q[doy%Q.length];
+draw();upc();
+if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})}
+</script>
+</body>
+</html>
